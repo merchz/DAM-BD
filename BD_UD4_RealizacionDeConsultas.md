@@ -1,13 +1,13 @@
-#Realización de consultas
-##El lenguaje DML (Data Manipulation Language)
+# Realización de consultas
+## El lenguaje DML (Data Manipulation Language)
 * Agrupa las sentencias SELECT, INSERT, DELETE y UPDATE.
 * Están enfocadas a la consulta, inserción, eliminación y modificación de registros presentes en Bases de datos. 
 * A cualquier ejecución de un comando en el DBMS se le denomina consulta, no solo a la ejecución de un SELECT.
 
-##La sentencia SELECT
+## La sentencia SELECT
 Se utiliza para consultar la información presente en las tablas. Una consulta puede seleccionar información de una sola tabla, de varias, o mediante relaciones entre tablas e incluso mediante tablas virtuales creadas a partir de otra consulta.
 
-##Consultas básicas
+## Consultas básicas
 
 Hay elementos que forman parte de todas las consultas, como la instrucción SELECT o la palabra FROM, para indicar el origen de los datos que se van a consultar.
 
@@ -24,7 +24,7 @@ Se pueden seleccionar de una tabla una columna, una serie de ellas o todas *. Ad
 
 
 
-##Filtros
+## Filtros
 
 Son Condiciones que cualquier DBMS intepreta para seleccionar registros. La palabra clave asociada a los filtros es WHERE.
 
@@ -42,7 +42,7 @@ from employees
 WHERE firstName = 'Michael'
 ```
 
-###Expresiones para filtros
+### Expresiones para filtros
 
 -Operandos: Puede ser un número, una cadena de caracteres, el campo firstName u otra expresión. 
 Los operandos numéricos van sin comillas simples, mientras que los caracteres o fechas van entre comillas simples.
@@ -57,10 +57,10 @@ Los operandos numéricos van sin comillas simples, mientras que los caracteres o
 
 -Uso de paréntesis. Cuando se desea alterar la prioridad natural de los operadores es válido recurrir a los paréntesis para aplicar los filtros.
 
-###Construcción de Filtros
+### Construcción de Filtros
 
 
-###Filtros con operador de pertenencia a conjuntos
+### Filtros con operador de pertenencia a conjuntos
 Además de los vistos anteriormente, tenemos el operador IN, de pertenencia a conjuntos. Por ejemplo, para localizar empleados cuyo nombre de pila sea Michael, Peter o John.
 
 ```sql
