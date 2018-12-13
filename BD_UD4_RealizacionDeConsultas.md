@@ -17,9 +17,9 @@ SELECT [DISTINCT] sql_expr [, sql_expr]...
 [WHERE filter]
 ```
 
-ejemplos de sql_expr: nombre_columna [AS alias], *, expresión.
+ejemplos de sql_expr: nombre_columna [AS alias], \* expresión.
 
-Se pueden seleccionar de una tabla una columna, una serie de ellas o todas *. Además, es posible utilizar una expresión algebraica compuesta por operadores, operandos y funciones. DISTINCT es opcional y sirve para eliminar las repeticiones en el resultado de la consulta.
+Se pueden seleccionar de una tabla una columna, una serie de ellas o todas \*. Además, es posible utilizar una expresión algebraica compuesta por operadores, operandos y funciones. DISTINCT es opcional y sirve para eliminar las repeticiones en el resultado de la consulta.
 
 
 
@@ -44,13 +44,14 @@ WHERE firstName = 'Michael'
 
 ### Expresiones para filtros
 
-*Operandos: Puede ser un número, una cadena de caracteres, el campo firstName u otra expresión. 
+* Operandos: Puede ser un número, una cadena de caracteres, el campo firstName u otra expresión. 
 	* Los operandos numéricos van sin comillas simples, mientras que los caracteres o fechas van entre comillas simples.
-* Operadores aritméticos: +, -, *, /, %. Suma, resta (o signo), producto, división y módulo respectivamente.
+* Operadores aritméticos: +, -, \*, /, %. Suma, resta (o signo), producto, división y módulo respectivamente.
 * Operadores relacionales: <, >, <>, <=, >=, = 
 * Operadores lógicos: AND, OR, NOT.
 * Funciones: concat, date_add, right, left... Varían en función del DBMS con el que trabajemos. 
 * Uso de paréntesis. Cuando se desea alterar la prioridad natural de los operadores es válido recurrir a los paréntesis para aplicar los filtros.
+
 ### Construcción de Filtros
 ### Con operador de pertenencia a conjuntos
 Además de los vistos anteriormente, tenemos el operador IN, de pertenencia a conjuntos. Por ejemplo, para localizar empleados cuyo nombre de pila sea Michael, Peter o John.
