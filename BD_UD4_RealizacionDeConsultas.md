@@ -108,7 +108,7 @@ LIMIT 4,2 #Devuelve 2 filas a partir de la quinta. Se puede usar sin número de 
 
 ## Ordenar el resultado de las consultas
 
-Mediante la cláusula *ORDER BY* se puede establecer el orden del resultado de la consulta. Admite varias columnas para la ordenación, así como el sentido *ASC* o *DESC* de la misma. y se puede establecer el tipo de ordenación para cada columna.
+Mediante la cláusula *ORDER BY* se puede establecer el orden del resultado de la consulta. Admite varias columnas para la ordenación, así como el sentido *ASC* o *DESC* de la misma. Es posible establecer el tipo de ordenación para cada columna.
 
 ```sql
 SELECT * 
