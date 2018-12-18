@@ -120,3 +120,70 @@ SELECT *
 from employees
 ORDER BY employee_age ASC, lastName DESC
 ```
+
+## Funciones de resumen
+* Count(expresión)
+	* Cuenta el número de valores (excluye nulos) de la columna (o fila) indicada.
+* Sum(expresión)
+	* Suma los valores pasados como argumento
+* Avg(expresión)
+	* Calcula el valor medio de los valores del argumento
+* Min(expresión)
+	* Calcula el mínimo
+* Max(expresión)
+	* Calcula el máximo
+
+### Agrupación de registros
+Además de las consultas que emplean las funciones de resumen, existe la posibilidad de llevar a cabo agrupaciones de registros, es decir, obtener conjuntos de registros que comparten el mismo valor en una o varias columnas. Mediante la cláusula *GROUP BY* es posible definir los agrupamientos que se desean obtener. Por ejemplo:
+
+```sql
+SELECT dept_name, count(*) 
+from employees
+GROUP BY dept_name; # Agrupa por los distintos departamentos
+```
+
+### Filtros para Agrupaciones
+Del mismo modo que se ha visto que es posible establecer filtros mediante el uso de la cláusula *WHERE* es posible establecer filtros tras llevar a cabo agrupaciones (*WHERE* filtra _antes_ de hacer las agrupaciones). Mediante la cláusula *HAVING* se puede filtrar resultados de consultas que incluyen agrupaciones.
+
+```sql
+SELECT dept_name, avg(employee_age)
+from employees
+GROUP BY dept_name
+HAVING avg(employee_age) > 45
+ORDER BY avg(employee_age);
+```
+
+## Subconsultas
+Mediante la anidación de subconsultas es posible filtrar mediante los datos que proporciona otra consulta diferente. Este tipo de filtros pueden aplicarse tanto al filtro de columnas *WHERE* como al de agrupaciones *HAVING*. 
+
+### Pertenencia a conjuntos
+```sql
+SELECT firstName, lastName
+from employees
+where dept_name IN (SELECT name from dept where dept_leader_firstName = 'Michael') #empleados que trabajan en los departamentos cuyo jefe se llama Michael
+```
+
+### Comparación
+Además, es posible establecer comparaciones entre el resultado devuelto por la subconsulta mediante cualquier operador aplicado en los filtros, aunque para estos casos hay que velar porque la subconsulta devuelva una única fila y columna o dará error.
+
+### Operadores de cuantificación *ALL* y *ANY*
+
+Este tipo de cláusulas se emplean para obtener la relación entre una expresión y todos los registros devueltos por una subconsulta (*ALL*) o solo algunos de ellos (*ANY*).
+
+```sql
+SELECT firstName, lastName, employee_age
+from employees
+where employee_age > ALL (SELECT employee_age from employees where dept_name = 'Management')
+```
+
+### Existencia
+Mediante la cláusula *EXISTS* es posible filtrar los resultados de una consulta siempre y cuando la subconsulta asociada devuelva algún resultado, o lo contrario mediante *NOT EXISTS*.
+
+```sql
+select *
+from employees E
+where EXISTS (select *
+                from relationship R 
+               where R.employee_id = E.employee_id
+                 and R.type = 'brother') #Devolverá los empleados que tengan algún hermano en la empresa
+```
