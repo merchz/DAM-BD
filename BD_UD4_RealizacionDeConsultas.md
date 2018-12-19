@@ -187,3 +187,14 @@ where EXISTS (select *
                where R.employee_id = E.employee_id
                  and R.type = 'brother') #Devolverá los empleados que tengan algún hermano en la empresa
 ```
+
+## Consultas Multitabla
+Se denominan así las que pueden consultar información de más de una tabla. La unión (join) se realiza mediante los campos que tienen en común las tablas. Hay varios tipos de uniones y los iremos viendo poco a poco. La unión más habitual es el producto cartesiano y se puede expresar mediante la adición de tablas en la cláusula ```FROM```, por ejemplo:
+
+```sql
+SELECT t1.col_a, t2.col_x
+from table1 t1, table2 t2
+WHERE ...
+```
+
+El producto cartesiano de dos o más tablas resulta en la combinación de todas las filas de las tablas involucradas, por lo que suele ser necesario establecer un filtro mediante las columnas que son comunes en las tablas, a fin de evitar repeticiones.
