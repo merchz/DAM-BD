@@ -261,3 +261,6 @@ En este caso no se requiere que haya equivalencias entre las tablas relacionadas
 ### RIGHT OUTER JOIN
 
 ### FULL OUTER JOIN
+
+## Recursos
+[Importar y exportar Bases de datos por consola en Linux](https://blog.endeos.com/como-importar-y-exportar-bases-de-datos-mysql-por-consola-en-linux/)
