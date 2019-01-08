@@ -189,7 +189,9 @@ where EXISTS (select *
 ```
 
 ## Consultas Multitabla
-Se denominan así las que pueden consultar información de más de una tabla. La unión (join) se realiza mediante los campos que tienen en común las tablas. Hay varios tipos de uniones y los iremos viendo poco a poco. La unión más habitual es el producto cartesiano y se puede expresar mediante la adición de tablas en la cláusula ```FROM```, por ejemplo:
+Se denominan así las que pueden consultar información de más de una tabla. La unión (join) se realiza mediante los campos que tienen en común las tablas. Hay varios tipos de uniones y los iremos viendo poco a poco. 
+
+La unión más habitual es el producto cartesiano y se puede expresar mediante la adición de tablas en la cláusula ```FROM```, por ejemplo:
 
 ```sql
 SELECT t1.col_a, t2.col_x
@@ -197,4 +199,65 @@ from table1 t1, table2 t2
 WHERE ...
 ```
 
-El producto cartesiano de dos o más tablas resulta en la combinación de todas las filas de las tablas involucradas, por lo que suele ser necesario establecer un filtro mediante las columnas que son comunes en las tablas, a fin de evitar repeticiones.
+El producto cartesiano de dos o más tablas resulta en la combinación de todas las filas de las tablas involucradas, por lo que suele ser necesario establecer un filtro, en la cláusula ```WHERE``` referenciando las columnas que son comunes en las tablas, a fin de evitar repeticiones. 
+
+Tenemos por lo tanto que en las consultas multitabla se da la presencia de varias tablas en la cláusula ```FROM``` como el filtro que evita redundancias en la cláusula ```WHERE```. A esta combinación se la denomina JOIN y puede abarcar desde 2 a N tablas presentes en la base de datos.
+
+Cuando se emplean más de dos tablas, el número de JOIN también va aumentando. Se entiende que el primer JOIN se produce entre las dos primeras tablas, el segundo reune el resultado del primer JOIN con la tercera tabla y así sucesivamente.
+
+A partir de [SQL2](https://es.wikipedia.org/wiki/SQL#Or%C3%ADgenes_y_evoluci%C3%B3n) (1992) se introdujo una nueva sintaxis para determinados tipos de consultas multitabla. Los JOIN internos, de producto cartesiano (JOIN cruzado) y externos:
+
+1. JOIN interna.
+    * Equivalencia (INNER JOIN)
+    * Natural (NATURAL JOIN)
+2. JOIN cruzado (CROSS JOIN)
+3. JOIN externa
+    * Por la izquierda (LEFT OUTER JOIN)
+    * Por la derecha (RIGHT OUTER JOIN)
+    * Total o completa (FULL OUTER JOIN)
+
+
+[Ejemplos gráficos JOIN](https://ingenieriadesoftware.es/tipos-sql-join-guia-referencia/)
+
+### INNER JOIN
+
+Este tipo de unión se puede expresar de dos maneras, utilizando la coma para separar las tablas en la cláusula ```FROM``` (como se hacía antes de SQL2) o mediante la palabra reservada ```JOIN```. En ambos casos se realiza el producto cartesiano de todos los registros (o filas). Posteriormente se combinan los registros de una tabla con los de la siguiente. Hay que observar que los registros nulos no se combinan.
+
+```sql
+#FORMATO SQL2
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2 ON table1.column_name = table2.column_name;
+```
+
+### NATURAL JOIN
+
+Supone una especialización del INNER JOIN ya visto. Si dos tablas están unidas por columnas homónimas, se habla de NATURAL JOIN. Dado que el vínculo en las sentencias NATURAL JOIN se logra utilizando columnas del mismo nombre, los valores en cuestión no se ofrecen por partida doble en el conjunto de resultados, sino que se fusionan en una columna conjunta. 
+
+```sql
+SELECT column_name(s)
+FROM table1
+NATURAL JOIN table2;
+```
+
+En este caso, si se selecciona una columna cuyo nombre es compartido en ambas tablas, no es necesario indicar a qué tabla se refiere, ya que el propio operador solo devolverá un campo único por cada pareja de columnas (o campos) que compartan el mismo nombre.
+
+### CROSS JOIN
+
+Devuelve el producto cartesiano de las tablas, valores nulos inclusive.
+
+```sql
+#FORMATO SQL2
+SELECT column_name(s)
+FROM table1
+CROSS JOIN table2;
+```
+### Composiciones externas. 
+
+En este caso no se requiere que haya equivalencias entre las tablas relacionadas. Es decir, el registro se selecciona aunque no haya otro que le corresponda en otra tabla. La diferencia entre una composición u otra radica en si se admiten (o no) y en qué tabla los registros que no tengan correspondencia; si es en la tabla de la izquierda, en la de la derecha o en ambas.
+
+### LEFT OUTER JOIN
+
+### RIGHT OUTER JOIN
+
+### FULL OUTER JOIN
