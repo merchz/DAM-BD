@@ -307,65 +307,6 @@ Ahora se puede hacer un `SELECT * from biblio`, y tendrá los resultados ya filt
 
 Las vistas (o tablas derivadas) no tienen limitación, se pueden unir a otras tablas, filtrar, agrupar, etc.
 
-## Actualizaciones
-
-### Inserción
-
-* Se basan en la sentencia `INSERT INTO`. Los valores pueden ser cualquier constante, expresión o función o bien las palbaras clave *DEFAULT* o *NULL*.
-
-* Se ha de especificar valor para todos los atributos de la lista de atributos y manteniendo el orden en el que aparecen.
-
-* Si hay algún atributo de la tabla que no aparece en la lista, se le asigna el valor por defecto que tenga y si no tiene se deja a *null*.
-
-* Si no se especifica la lista de atributos, se ha de dar valor a todos los atributos de la tabla en el orden especificado cuando se va a crear.
-
-
-#### Un solo registro
-
-```sql
-INSERT INTO table_name (column1, column2, column3, ...)
-VALUES (value1, value2, value3, ...);
-```
-
-#### Varios registros
-
-```sql
-INSERT INTO table_name(column1, column2, column3, ...)
-(SELECT ....)
-```
-
-### Modificación
-
-* Se basan en la sentencia `sql UPDATE`
-* Modifican todos los registros de la tabla que cumplan la condición expresada
-* Para cada registro, modifica el valor de todos los atributos que se indican, sustituyendo por el resultado de evaluar la expresión que se les asigna.
-* Solo se puede expresar una tabla para actualizar
-* La expresión puede ser cualquier constante, expresión o función, incluso una subconsulta que retorne un único valor
-
-```sql
-UPDATE table_name
-SET column1 = value1, column2 = value2, ...
-WHERE condition;
-```
-
-### Eliminación
-
-* Se basan en la sentencia `DELETE`
-* Elimina todos los registros de la tabla que cumplen la condición indicada
-* Sólo se puede especificar una tabla
-
-```sql
-DELETE 
-FROM table_name
-WHERE column1 = value1;
-```
-
-
-### Integridad de las actualizaciones
-
-* Todas las actualizaciones que provocan dejar de cumplir las reglas de integridad de la base de datos (la de entidades, referencial o definida por el usuario), producirán error y serán rechazadas.
-
-* La eliminación o actualización de registros de una tabla puede provocar también la actualización o eliminación de registros de otras tablas relacionadas según las reglas de integridad referencial que estén definidas (CASCADE, SET NULL, etc.)
 
 ## Recursos
 [Importar y exportar Bases de datos por consola en Linux](https://blog.endeos.com/como-importar-y-exportar-bases-de-datos-mysql-por-consola-en-linux/)
