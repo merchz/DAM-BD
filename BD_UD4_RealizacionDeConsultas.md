@@ -191,7 +191,7 @@ where EXISTS (select *
 ## Consultas Multitabla
 Se denominan así las que pueden consultar información de más de una tabla. La unión (join) se realiza mediante los campos que tienen en común las tablas. Hay varios tipos de uniones y los iremos viendo poco a poco. 
 
-La unión más habitual es el producto cartesiano y se puede expresar mediante la adición de tablas en la cláusula ```FROM```, por ejemplo:
+La unión más habitual es el producto cartesiano y se puede expresar mediante la adición de tablas en la cláusula `FROM`, por ejemplo:
 
 ```sql
 SELECT t1.col_a, t2.col_x
@@ -199,9 +199,9 @@ from table1 t1, table2 t2
 WHERE ...
 ```
 
-El producto cartesiano de dos o más tablas resulta en la combinación de todas las filas de las tablas involucradas, por lo que suele ser necesario establecer un filtro, en la cláusula ```WHERE``` referenciando las columnas que son comunes en las tablas, a fin de evitar repeticiones. 
+El producto cartesiano de dos o más tablas resulta en la combinación de todas las filas de las tablas involucradas, por lo que suele ser necesario establecer un filtro, en la cláusula `WHERE` referenciando las columnas que son comunes en las tablas, a fin de evitar repeticiones. 
 
-Tenemos por lo tanto que en las consultas multitabla se da la presencia de varias tablas en la cláusula ```FROM``` como el filtro que evita redundancias en la cláusula ```WHERE```. A esta combinación se la denomina JOIN y puede abarcar desde 2 a N tablas presentes en la base de datos.
+Tenemos por lo tanto que en las consultas multitabla se da la presencia de varias tablas en la cláusula `FROM` como el filtro que evita redundancias en la cláusula `WHERE`. A esta combinación se la denomina JOIN y puede abarcar desde 2 a N tablas presentes en la base de datos.
 
 Cuando se emplean más de dos tablas, el número de JOIN también va aumentando. Se entiende que el primer JOIN se produce entre las dos primeras tablas, el segundo reune el resultado del primer JOIN con la tercera tabla y así sucesivamente.
 
@@ -221,7 +221,7 @@ A partir de [SQL2](https://es.wikipedia.org/wiki/SQL#Or%C3%ADgenes_y_evoluci%C3%
 
 ### INNER JOIN
 
-Este tipo de unión se puede expresar de dos maneras, utilizando la coma para separar las tablas en la cláusula ```FROM``` (como se hacía antes de SQL2) o mediante la palabra reservada ```JOIN```. En ambos casos se realiza el producto cartesiano de todos los registros (o filas). Posteriormente se combinan los registros de una tabla con los de la siguiente. Hay que observar que los registros nulos no se combinan.
+Este tipo de unión se puede expresar de dos maneras, utilizando la coma para separar las tablas en la cláusula `FROM` (como se hacía antes de SQL2) o mediante la palabra reservada `JOIN`. En ambos casos se realiza el producto cartesiano de todos los registros (o filas). Posteriormente se combinan los registros de una tabla con los de la siguiente. Hay que observar que los registros nulos no se combinan.
 
 ```sql
 #FORMATO SQL2
@@ -258,9 +258,114 @@ En este caso no se requiere que haya equivalencias entre las tablas relacionadas
 
 ### LEFT OUTER JOIN
 
+```sql
+tabla1 LEFT JOIN tabla2 ON atributo1 = atributo2
+```
+Recupera todos los registros de tabla1 , incluso los que no estén relacionados con ningún valor de tabla2. 
+A los atributos de tabla2 para los que no se tiene valor se pone *NULL*
+
 ### RIGHT OUTER JOIN
 
+```sql
+tabla1 RIGHT JOIN tabla2 ON atributo1 = atributo2
+```
+Recupera todos los registros de tabla2 , incluso los que no estén relacionados con ningún valor de tabla1. 
+A los atributos de tabla1 para los que no se tiene valor se pone *NULL*
+
 ### FULL OUTER JOIN
+
+```sql
+table1 FULL OUTER JOIN table2 ON table1.column_name = table2.column_name;
+```
+Recupera todos los registros de ambas tablas, tengan o no relación entre ellos. Es la combinación de RIGHT y LEFT JOIN.
+
+### Join de una tabla consigo misma
+En ocasiones puede ser necesaria la obtención de relaciones reflexivas, por ejemplo cuando se ha de obtener la información de un empleado y la de su jefe (que a su vez también es empleado). 
+
+```sql
+select e.nombre, e.apellido, j.nombre, j.apellido
+from empleados e 
+inner join empleados j on e.codigoEmpleado = j.codigoJefe
+```
+
+## Vistas
+
+*Una vista es una consulta que se presenta como una tabla (virtual) a partir de un conjunto de tablas en una base de datos relacional. Las vistas tienen la misma estructura que una tabla: filas y columnas. La única diferencia es que sólo se almacena de ellas la definición, no los datos.* [Fuente](https://es.wikipedia.org/wiki/Vista_(base_de_datos))
+
+
+En muchos sistemas de gestión de bases de datos, usar vistas es algo muy simple. Por ejemplo:
+
+```sql
+CREATE VIEW biblio AS SELECT a.id as aid, a.name as author, b.id as bid, b.title as book 
+    FROM author a, book b 
+WHERE b.author_id = a.id AND a.id > 100;
+```
+
+Se creará una vista que ya tiene preseleccionados los nombres de autores superiores a 100 con sus libros, en una misma tabla.
+
+Ahora se puede hacer un `SELECT * from biblio`, y tendrá los resultados ya filtrados por el query que generó la vista. Pero lo más útil es poder seguir haciendo queries más específicos ahora sobre estos resultados agrupados y ya filtrados, como `SELECT * FROM biblio WHERE author LIKE ‘%rio%';` para encontrar todas las entradas para las cuales los autores tienen un ID superior a 100 *y* que se llamen algun nombre que contenga “rio”.
+
+Las vistas (o tablas derivadas) no tienen limitación, se pueden unir a otras tablas, filtrar, agrupar, etc.
+
+## Actualizaciones
+
+### Inserción
+
+* Se basan en la sentencia `INSERT INTO`. Los valores pueden ser cualquier constante, expresión o función o bien las palbaras clave *DEFAULT* o *NULL*.
+
+* Se ha de especificar valor para todos los atributos de la lista de atributos y manteniendo el orden en el que aparecen.
+
+* Si hay algún atributo de la tabla que no aparece en la lista, se le asigna el valor por defecto que tenga y si no tiene se deja a *null*.
+
+* Si no se especifica la lista de atributos, se ha de dar valor a todos los atributos de la tabla en el orden especificado cuando se va a crear.
+
+
+#### Un solo registro
+
+```sql
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+```
+
+#### Varios registros
+
+```sql
+INSERT INTO table_name(column1, column2, column3, ...)
+(SELECT ....)
+```
+
+### Modificación
+
+* Se basan en la sentencia `sql UPDATE`
+* Modifican todos los registros de la tabla que cumplan la condición expresada
+* Para cada registro, modifica el valor de todos los atributos que se indican, sustituyendo por el resultado de evaluar la expresión que se les asigna.
+* Solo se puede expresar una tabla para actualizar
+* La expresión puede ser cualquier constante, expresión o función, incluso una subconsulta que retorne un único valor
+
+```sql
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+```
+
+### Eliminación
+
+* Se basan en la sentencia `DELETE`
+* Elimina todos los registros de la tabla que cumplen la condición indicada
+* Sólo se puede especificar una tabla
+
+```sql
+DELETE 
+FROM table_name
+WHERE column1 = value1;
+```
+
+
+### Integridad de las actualizaciones
+
+* Todas las actualizaciones que provocan dejar de cumplir las reglas de integridad de la base de datos (la de entidades, referencial o definida por el usuario), producirán error y serán rechazadas.
+
+* La eliminación o actualización de registros de una tabla puede provocar también la actualización o eliminación de registros de otras tablas relacionadas según las reglas de integridad referencial que estén definidas (CASCADE, SET NULL, etc.)
 
 ## Recursos
 [Importar y exportar Bases de datos por consola en Linux](https://blog.endeos.com/como-importar-y-exportar-bases-de-datos-mysql-por-consola-en-linux/)
