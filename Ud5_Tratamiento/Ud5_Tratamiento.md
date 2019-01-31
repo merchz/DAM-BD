@@ -280,6 +280,7 @@ INSERT INTO jugadores VALUES(457, 'José', 9, 'delantero', 123);
 DELETE FROM equipos
 WHERE id = 123;
 ```
+* Es conveniente asegurar que las claves ajenas establecidas con este comportamiento no tengan la restricción de NOT NULL o se pueden producir errores.
 
 
 ### RESTRICT
