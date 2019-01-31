@@ -246,8 +246,104 @@ UPDATE equipos
 SET id = 245 WHERE id = 123;
 ```
 
-## Subconsultas y composiciones en órdenes de edición.
+### SET NULL
+
+* Establece a NULL el valor de la clave secundaria cuando se elimina el registro en la tabla principal o se modifica el valor del campo referenciado.
+
+```sql
+CREATE TABLE equipos (
+	id NUMBER(4),
+	nombre VARCHAR(20),
+	ciudad VARCHAR(20),
+	categoria NUMBER(2)
+) engine = innodb;
+
+CREATE TABLE jugadores (
+	id NUMBER(8),
+	nombre VARCHAR(20),
+	dorsal NUMBER(2),
+	posicion VARCHAR(20),
+	FOREIGN KEY equipo_id NUMBER(4) REFERENCES equipos(id)
+		ON DELETE SET NULL
+		ON UPDATE SET NULL
+) engine = innodb;
+
+INSERT INTO equipos VALUES(123, 'Tarazona CF', 'Tarazona', '4');
+
+INSERT INTO jugadores VALUES(456, 'Juan', 7, 'delantero', 123);
+INSERT INTO jugadores VALUES(457, 'José', 9, 'delantero', 123);
+```
+
+* Mediante el código bajo estas líneas, la columna equipo_id de la tabla jugadores establecerá los valores a NULL en todas las filas cuyo equipo_id sea igual a 123. Y como es evidente, se borrará en equipos el que tenga el id 123.
+
+```sql
+DELETE FROM equipos
+WHERE id = 123;
+```
+
+
+### RESTRICT
+
+El comportamiento por defecto, es decir, actúa si no se indica otro. Impide realizar modificaciones que violen la integridad referencial de la base de datos.
+
+```sql
+DELETE FROM equipos
+WHERE id = 123;
+```
+
+Vemos que el registro no se puede borrar porque existen registros relacionados en la tabla de jugadores con el equipo con id 123.
+
+
 ## Transacciones. Sentencias de procesamiento de transacciones.
+
+*Una transacción es una interacción con una estructura de datos compleja, compuesta por varios procesos que se han de aplicar uno después del otro. La transacción debe realizarse de una sola vez y sin que la estructura a medio manipular pueda ser alcanzada por el resto del sistema hasta que se hayan finalizado todos sus procesos.* [Fuente](https://es.wikipedia.org/wiki/Transacción_(informática))
+
+El ejemplo clásico de transacción es una transferencia bancaria, en la que se quita saldo a una cuenta y se añade en otra. Si no se puede abonar el dinero en la cuenta de destino, no se debe quitar de la cuenta de origen.
+
+### Principios ACID
+
+Las transacciones *deberían* garantizar todas las propiedades ACID (en ocasiones alguna de estas propiedades se simplifica o debilita en pro de un mejor rendimiento). El significado de las propiedades es:
+
+* Atomicity - Atomicidad. 
+Es la propiedad que asegura que la operación se ha realizado o no, y por lo tanto ante un fallo del sistema no puede quedar a medias.
+
+* Consistency - Consistencia. 
+Esta propiedad esta ligada a la integridad referencial, es decir solo se pueden escribir datos válidos respetando los tipos de datos declarados y la integridad referencial.
+
+* Isolation - Aislamiento. 
+Asegura que una operación no puede afectar a otras. Con esto se asegura que varias transacciones sobre la misma información sean independientes y no generen ningún tipo de error.
+
+* Durability - Durabilidad. 
+Cuando se completa una transacción con éxito los cambios se vuelven permanentes.
+
+
+### Garantía de cumplimiento de las transacciones
+
+Lo más habitual en los DBMS es que tengan activado ```AUTOCOMMIT```, lo que significa que cada comando sql se considera una transacción independiente. Por el contrario, si se desea considerar varias operaciones como una sola hay que establecer ```AUTOCOMMIT = 0``` e indicar manualmente el inicio y final de cada transacción.
+
+El inicio se especifica mediante ```START TRANSACTION``` mientras que el final puede hacerse de dos formas, dependiendo del resultado de las operaciones:
+
+* ```COMMIT``` (se ejecutan todas las instrucciones y guardamos los datos) 
+
+* ```ROLLBACK``` (se produce un error y no se guardan los cambios). 
+
+```sql
+ SET AUTOCOMMIT=0; # No recomendado
+
+# START TRANSACTION también desactiva el autocommit y es la forma recomendada de hacerlo
+START TRANSACTION;
+
+# distintas operaciones de la transacción...
+
+COMMIT; # Confirma que todo ha ido bien y da por finalizada la transacción.
+```
+Hay que tener en cuenta que al realizar una transacción SQL que cuando se realice un INSERT, UPDATE o DELETE se generará un bloqueo sobre la tabla y que otros clientes no pueden acceder esta para escribir. Pero si podrán realizar lecturas, en las que no podrán ver los datos del primer cliente hasta que los mismos sean confirmados.
+
+### Soporte a transacciones en MySQL
+
+En MySQL hay que utilizar innodb como motor de almacenamiento para poder manejar transacciones.
+
+
 ## Problemas asociados al acceso simultáneo a los datos.
 ## Bloqueos compartidos y exclusivos. Políticas de bloqueo.
 ## Procesos y consultas masivas.
