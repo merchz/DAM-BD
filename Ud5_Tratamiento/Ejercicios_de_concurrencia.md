@@ -13,9 +13,10 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 usuario A | usuario B
 	-- | --
-BEGIN | BEGIN <br> Update empleados <br> set salario = salario * 1.1; <br> INSERT into empleados values(23, 'Lopez', 1100) |
+BEGIN | BEGIN Update empleados set salario = salario * 1.1; INSERT into empleados values(23, 'Lopez', 1100) |
  SELECT * from empleados; |
 | ROLLBACK;
+
 
 * El usuario A hace uso de unos datos que no existen puesto que se ha hecho ROLLBACK.
 
