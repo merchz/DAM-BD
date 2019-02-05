@@ -409,11 +409,11 @@ De forma más relacionada con el manejo de transacciones en los DBMS, se produce
 
 * Nivel de aislamiento global 
 
-	* ```SELECT @@global.tx_isolation;```
+	* ```SELECT @@global.transaction_isolation;```
 
 * Nivel de aislamiento de la sesión actual
 
-	* ```SELECT @@tx_isolation;```
+	* ```SELECT @@transaction_isolation;```
 
 * Se puede cambiar el nivel de aislamiento global o de una sesión individual mediante:
 
