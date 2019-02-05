@@ -346,5 +346,88 @@ En MySQL hay que utilizar innodb como motor de almacenamiento para poder manejar
 
 
 ## Problemas asociados al acceso simultáneo a los datos.
+
+Asociado al uso de transacciones, aparecen en este contexto los problemas de concurrencia.
+
+*Concurrencia se refiere a la habilidad de distintas partes de un programa, algoritmo, o problema de ser ejecutado en desorden o en orden parcial, sin afectar el resultado final.*[Fuente](https://es.wikipedia.org/wiki/Concurrencia_(inform%C3%A1tica)).
+
+De forma más relacionada con el manejo de transacciones en los DBMS, se producen problemas cuando dos o más transacciones tratan de acceder al mismo dato. En el ámbito de la concurrencia puede darse una serie de problemas:
+
+* Problema de la modificación perdida: 2 transacciones acceden a la misma fila y modifican su valor. La última modificación sobreescribe la anterior.
+
+* Lectura sucia (DIRTY READ): Una transacción modifica una fila, Una segunda transacción lee esa fila antes de que la primera haga COMMIT. Si la primera hace ROLLBACK, la información leída es incorrecta.
+
+* Lectura no repetible (NONREPEATEABLE READ): Una transacción lee una fila. Una segunda transacción modifica esa fila. Las siguientes lecturas de la primera transacción producen resultados diferentes al de la primera lectura.
+
+
+* Lectura fantasma (PHANTOM READ): Una transacción lee un conjunto de filas. Una segunda transacción modifica los datos. Si la primera transacción repite la lectura con las mismas condiciones de búsqueda, el numero de filas será diferente.
+
+
+
+### Niveles de aislamiento
+
+*De las cuatro propiedades ACID de un Sistema de gestión de bases de datos relacionales (DBMS) la de aislamiento es la que más frecuentemente se relaja. Para obtener el mayor nivel de aislamiento, un DBMS generalmente hace un bloqueo de los datos o implementa un Control de concurrencia mediante versiones múltiples (MVCC), lo que puede resultar en una pérdida de concurrencia. Por ello se necesita añadir lógica adicional al programa que accede a los datos para su funcionamiento correcto.*
+
+*La mayor parte de los DBMS ofrecen unos ciertos niveles de aislamiento que controlan el grado de bloqueo durante el acceso a los datos. Para la mayor parte de aplicaciones, el acceso a los datos se puede realizar de modo que se eviten altos niveles de aislamiento (i.e. nivel SERIALIZABLE), reduciendo así la sobrecarga debida a la necesidad de bloqueos por el sistema. El programador debe analizar detenidamente el código que accede a la base de datos para asegurarse de que el descenso del nivel de aislamiento que ofrece el DBMS no produce errores en el programa. Recíprocamente, si se usan altos niveles de aislamiento la posibilidad de bloqueo aumenta, lo que también requiere análisis cuidadoso del código.* [Fuente](https://es.wikipedia.org/wiki/Aislamiento_(ACID)#Niveles_de_aislamiento)
+
+
+* Read uncommited
+
+	* Permite a las transacciones leer los datos actualizados por otra transacción aún sin terminar las sentencias SELECT son ejecutadas sin realizar bloqueos.
+	* Dado que no bloquea nada, no aísla, siendo el más rápido.
+	* Pueden ocurrir 3 problemas de concurrencia:
+		* Lectura sucia.
+		* Lectura no repetible.
+		* Lectura fantasma.
+
+
+* Read commited
+
+	* No permite lecturas sucias, pues bloquea todos los registros actualizados por la transacción. 
+	* Los datos leídos pueden ser modificados por otras transacciones
+	* Es el que se establece por defecto en Oracle o SQL Server.
+	* Pueden ocurrir 2 problemas de concurrencia:
+		* Lectura no repetible.
+		* Lectura fantasma.
+
+
+* Repeateable read
+
+	* Es el que se usa por defecto en InnoDB (MySQL).
+	* Soluciona el problema de los datos repetibles pero no el de las modificaciones fantasma.
+	* Da por definitiva la primera lectura. De este modo, ningún registro leído puede ser cambiado por otra transacción.
+
+
+* Serializable
+
+	* Penaliza el rendimiento
+	* Puede provocar la aparición de interbloqueos (una transacción no pueda finalizar nunca debido a que otra lo está bloqueando indefinidamente).
+	* Todas las transacciones se realizan sin concurrencia.
+	* Evita todos los problemas de aislamiento.
+
+#### Conocer/Modificar el nivel de aislamiento actual
+
+* Nivel de aislamiento global 
+
+	* ```SELECT @@global.tx_isolation;```
+
+* Nivel de aislamiento de la sesión actual
+
+	* ```SELECT @@tx_isolation;```
+
+* Se puede cambiar el nivel de aislamiento global o de una sesión individual mediante:
+
+```sql
+SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL 
+
+	READ UNCOMMITTED
+	READ COMMITTED
+	REPEATABLE READ
+	SERIALIZABLE
+```
+
+
+
+
 ## Bloqueos compartidos y exclusivos. Políticas de bloqueo.
 ## Procesos y consultas masivas.
