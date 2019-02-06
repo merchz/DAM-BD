@@ -426,8 +426,8 @@ SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL
 	SERIALIZABLE
 ```
 
+## Gestión de usuarios y privilegios
 
+[PDF ES](http://www.personal.fi.upm.es/~lmengual/GESTION_BD/GBD_GESTION_USUARIOS.pdf)
 
-
-## Bloqueos compartidos y exclusivos. Políticas de bloqueo.
 ## Procesos y consultas masivas.
