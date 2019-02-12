@@ -428,6 +428,13 @@ SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL
 
 ## Gestión de usuarios y privilegios
 
-[PDF ES](http://www.personal.fi.upm.es/~lmengual/GESTION_BD/GBD_GESTION_USUARIOS.pdf)
+[MySQL PDF ES](http://www.personal.fi.upm.es/~lmengual/GESTION_BD/GBD_GESTION_USUARIOS.pdf)
 
-## Procesos y consultas masivas.
+[Oracle ES](https://jorgesanchez.net/manuales/abd/control-usuarios-oracle.html)
+
+## Optimización de consultas
+
+[MySQL Proceso de ejecución de consultas](http://www.sgmendez.com/2011/03/14/funcionamiento-proceso-consulta-mysql/)
+
+* [Índices](https://jorgesanchez.net/manuales/sql/ddl-otros-sql2016.html)
+* [Optimización mediante índices](https://www.siteground.es/kb/optimizacion-mysql-usando-indexes/)
