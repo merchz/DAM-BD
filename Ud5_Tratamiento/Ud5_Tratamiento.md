@@ -40,7 +40,7 @@ En la sección de *Datos externos / Más* habría que elegir *bases de datos de 
 Esto aplica también a suites gratuitas como Openoffice.
 
 
-## Inserción de registros. Inserción a partir de una consulta.
+## Inserción de registros. 
 
 * Se basan en la sentencia ```INSERT INTO```. Los valores pueden ser cualquier constante, expresión o función o bien las palbaras clave *DEFAULT* o *NULL*.
 
@@ -53,7 +53,7 @@ Esto aplica también a suites gratuitas como Openoffice.
 * Si se intenta insertar más valores que columnas tenga la tabla, se producirá un error.
 
 
-#### Un solo registro
+### Un solo registro
 
 ```sql
 # Algunas columnas
@@ -69,7 +69,7 @@ INSERT INTO table_name
 VALUES (value1, DEFAULT, value3)
 ```
 
-#### Varios registros
+### Varios registros
 
 * Es posible insertar más de un registro en un solo ```ÌNSERT INTO```.
 
@@ -79,6 +79,9 @@ VALUES 	('Pau', 'Gasol', 'Pivot'),
 		('Luka','Dončić','Alero'),
 		('Stephen','Curry','Base');
 ```
+
+### Inserción a partir de una consulta.
+
 * También es posible insertar en una tabla el resultado de una consulta. En este caso, la consulta debe devolver exactamente las columnas a insertar y puede ser tan compleja como se desee a nivel de filtros, agrupamientos, ordenación, etc.
 
 ```sql
