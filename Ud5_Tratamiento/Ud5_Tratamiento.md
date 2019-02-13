@@ -435,6 +435,38 @@ SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL
 
 [Oracle ES](https://jorgesanchez.net/manuales/abd/control-usuarios-oracle.html)
 
+### Creación de usuarios
+
+```sql
+CREATE USER nb_usuario IDENTIFIED BY 'password' [opciones_según_dbms];
+```
+
+### Modificación de usuarios
+
+```sql
+#MySQL
+UPDATE mysql.USER
+SET campo = valor
+WHERE user='nb_usuario';
+
+#Oracle
+ALTER USER nb_usuario
+IDENTIFIED BY 'nuevopass' DEFAULT TABLESPACE 'nb_tablespace';
+```
+
+### Privilegios en Oracle
+
+* Clasifica los permisos en dos tipos:
+	* Sistema.
+	* Objeto. 
+
+* Establece *ROLES*. Conjunto de privilegios asignable a un usuario determinado. Un usuario puede tener asignados varios roles.
+
+* Establece *PERFILES*. Un perfil es un conjunto de restricciones en el acceso a recursos. Solo puede haber un perfil por usuario y el objetivo general de definir perfiles es limitar los recursos del sistema disponibles para los usuarios.
+
+De lo anterior se entiende que se pueden asignar a un usuario privilegios de sistema, de objetos, roles y perfil.
+
+
 ## Optimización de consultas
 
 [MySQL Proceso de ejecución de consultas](http://www.sgmendez.com/2011/03/14/funcionamiento-proceso-consulta-mysql/)
