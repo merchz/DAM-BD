@@ -473,3 +473,5 @@ De lo anterior se entiende que se pueden asignar a un usuario privilegios de sis
 
 * [Índices](https://jorgesanchez.net/manuales/sql/ddl-otros-sql2016.html)
 * [Optimización mediante índices](https://www.siteground.es/kb/optimizacion-mysql-usando-indexes/)
+* [Consejos optimización](https://purolinux.com/2017/06/06/20-consejos-para-optimizar-consultas-sql/)
+* [Repo Git BD employees MySQL con datos](https://github.com/datacharmer/test_db)
