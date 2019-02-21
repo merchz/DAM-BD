@@ -469,7 +469,8 @@ De lo anterior se entiende que se pueden asignar a un usuario privilegios de sis
 
 ## Optimización de consultas
 
-[MySQL Proceso de ejecución de consultas](http://www.sgmendez.com/2011/03/14/funcionamiento-proceso-consulta-mysql/)
+* [MySQL Proceso de ejecución de consultas](http://www.sgmendez.com/2011/03/14/funcionamiento-proceso-consulta-mysql/)
+* [Optimización MySQL Adictos al trabajo](https://www.adictosaltrabajo.com/2016/10/24/optimizacion-de-consultas-en-mysql/)
 
 * [Índices](https://jorgesanchez.net/manuales/sql/ddl-otros-sql2016.html)
 * [Optimización mediante índices](https://www.siteground.es/kb/optimizacion-mysql-usando-indexes/)
