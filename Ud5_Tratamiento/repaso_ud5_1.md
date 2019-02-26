@@ -1,7 +1,7 @@
 ## Ejercicios repaso
 
 1. Crea una copia de seguridad de la estructura y contenido actual de la BD Jardineria.
-2. Modifica la tabla DetallePedido para insertar una columna para el IV de tipo numérico. Mediante una transacción establece el valor de dicho campo a 18 para aquellos registros cuyo pedido tenga fecha a partir del 1 de Julio de 2010. A continuación, actualiza el resto de pedidos estableciendo el IVA a 21.
+2. Modifica la tabla DetallePedido para insertar una columna para el IV de tipo numérico. Mediante una transacción establece el valor de dicho campo a 18 para aquellos registros cuyo pedido tenga fecha a partir del 1 de Julio de 2008. A continuación, actualiza el resto de pedidos estableciendo el IVA a 21.
 3. Modifica la tabla DetallePedido para incorporar una columna llamada pvp_linea de tipo numérico, y actualiza todos sus registros para calcular su valor con la fórmula ```pvp_linea = PrecioUnidad * Cantidad*IVA/100```.
 4. Borra el cliente que posea el límite de crédito más bajo. ¿Es posible borrarlo con solo una consulta? Justifica tu respuesta.
 5. Inserta dos clientes nuevos para un empleado cualquiera que sea representante de ventas. A continuación inserta mediante transacciones un pedido que tenga al menos 3 líneas de detalle. 
